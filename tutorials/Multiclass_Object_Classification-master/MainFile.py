@@ -6,10 +6,10 @@ import time
 
 data_dimension = 32
 
-X = np.load( 'processed_data/x.npy'.format( data_dimension ))
-Y = np.load( 'processed_data/y.npy'.format( data_dimension ))
-test_X = np.load( 'processed_data/test_x.npy'.format( data_dimension ))
-test_Y = np.load( 'processed_data/test_y.npy'.format( data_dimension ))
+X = np.load( 'test1_images/x.npy'.format( data_dimension ))
+Y = np.load( 'test1_images/y.npy'.format( data_dimension ))
+test_X = np.load( 'test1_images/test_x.npy'.format( data_dimension ))
+test_Y = np.load( 'test1_images/test_y.npy'.format( data_dimension ))
 
 print( X.shape )
 print( Y.shape )
