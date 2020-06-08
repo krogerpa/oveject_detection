@@ -64,7 +64,7 @@ y = np.array(keras.utils.to_categorical(np.array(labels), num_classes=len(sub_di
 
 train_features, test_features, train_labels, test_labels = train_test_split(x, y, test_size=0.4)
 
-np.save('{}x.npy'.format(output_path), train_features)
-np.save('{}y.npy'.format(output_path), train_labels)
-np.save('{}test_x.npy'.format(output_path), test_features)
-np.save('{}test_y.npy'.format(output_path), test_labels)
+np.save(os.path.join(output_path, 'x.npy'), train_features)
+np.save(os.path.join(output_path, 'y.npy'), train_labels)
+np.save(os.path.join(output_path, 'test_x.npy'), test_features)
+np.save(os.path.join(output_path, 'test_y.npy'), test_labels)
