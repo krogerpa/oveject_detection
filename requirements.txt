@@ -4,3 +4,5 @@ Pillow
 scikit-learn
 opencv-python
 keras
+jupyter
+matplotlib
