@@ -1,55 +1,56 @@
-
-from tensorflow.python.keras import models , optimizers , losses ,activations
-from tensorflow.python.keras.layers import *
-from PIL import Image
-import tensorflow as tf
-import time
 import os
+import time
+
 import numpy as np
+import tensorflow as tf
+from PIL import Image
+from tensorflow.python.keras import models, optimizers, losses, activations
+from tensorflow.python.keras.layers import *
 
-class Classifier (object) :
 
-    def __init__( self , number_of_classes ):
+class Classifier(object):
+
+    def __init__(self, number_of_classes):
 
         dropout_rate = 0.5
         self.__DIMEN = 32
 
-        input_shape = ( self.__DIMEN**2 , )
-        convolution_shape = ( self.__DIMEN , self.__DIMEN , 1 )
-        kernel_size = ( 3 , 3 )
-        pool_size = ( 2 , 2 )
+        input_shape = (self.__DIMEN ** 2,)
+        convolution_shape = (self.__DIMEN, self.__DIMEN, 1)
+        kernel_size = (3, 3)
+        pool_size = (2, 2)
         strides = 1
 
         activation_func = activations.relu
 
         self.__NEURAL_SCHEMA = [
 
-            Reshape( input_shape=input_shape , target_shape=convolution_shape),
+            Reshape(input_shape=input_shape, target_shape=convolution_shape),
 
-            Conv2D( 32, kernel_size=( 4 , 4 ) , strides=strides , activation=activation_func),
-            MaxPooling2D(pool_size=pool_size, strides=strides ),
+            Conv2D(32, kernel_size=(4, 4), strides=strides, activation=activation_func),
+            MaxPooling2D(pool_size=pool_size, strides=strides),
 
-            Conv2D( 64, kernel_size=( 3 , 3 ) , strides=strides , activation=activation_func),
-            MaxPooling2D(pool_size=pool_size , strides=strides),
+            Conv2D(64, kernel_size=(3, 3), strides=strides, activation=activation_func),
+            MaxPooling2D(pool_size=pool_size, strides=strides),
 
             Flatten(),
 
-            Dense( 100, activation=activation_func) ,
+            Dense(100, activation=activation_func),
             Dropout(dropout_rate),
 
-            Dense( number_of_classes, activation=tf.nn.softmax )
+            Dense(number_of_classes, activation=tf.nn.softmax)
 
         ]
 
-        self.__model = tf.keras.Sequential( self.__NEURAL_SCHEMA )
+        self.__model = tf.keras.Sequential(self.__NEURAL_SCHEMA)
 
         self.__model.compile(
             optimizer=optimizers.Adam(),
-            loss=losses.categorical_crossentropy ,
-            metrics=[ 'accuracy' ] ,
+            loss=losses.categorical_crossentropy,
+            metrics=['accuracy'],
         )
 
-    def fit(self, X, Y  , hyperparameters):
+    def fit(self, X, Y, hyperparameters):
         initial_time = time.time()
         self.__model.fit(X, Y,
                          batch_size=hyperparameters['batch_size'],
@@ -66,10 +67,10 @@ class Classifier (object) :
         self.__model.summary()
         print('Elapsed time acquired for {} epoch(s) -> {} {}'.format(hyperparameters['epochs'], eta, time_unit))
 
-    def prepare_images_from_dir( self , dir_path ) :
+    def prepare_images_from_dir(self, dir_path):
         images = list()
-        images_names = os.listdir( dir_path )
-        for imageName in images_names :
+        images_names = os.listdir(dir_path)
+        for imageName in images_names:
             image = Image.open(dir_path + imageName).convert('L')
             resize_image = image.resize((self.__DIMEN, self.__DIMEN))
             array = list()
@@ -79,27 +80,20 @@ class Classifier (object) :
                     sub_array.append(resize_image.load()[x, y])
                 array.append(sub_array)
             image_data = np.array(array)
-            image = np.array(np.reshape(image_data,(self.__DIMEN, self.__DIMEN, 1)))
+            image = np.array(np.reshape(image_data, (self.__DIMEN, self.__DIMEN, 1)))
             images.append(image)
 
-        return np.array( images )
+        return np.array(images)
 
-    def evaluate(self , test_X , test_Y  ) :
+    def evaluate(self, test_X, test_Y):
         return self.__model.evaluate(test_X, test_Y)
 
-    def predict(self, X  ):
-        predictions = self.__model.predict( X  )
+    def predict(self, X):
+        predictions = self.__model.predict(X)
         return predictions
 
-    def save_model(self , file_path ):
-        self.__model.save(file_path )
+    def save_model(self, file_path):
+        self.__model.save(file_path)
 
-    def load_model(self , file_path ):
+    def load_model(self, file_path):
         self.__model = models.load_model(file_path)
-
-
-
-
-
-
-
