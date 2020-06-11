@@ -1,6 +1,5 @@
 import os
 
-
 class AIBallAnnotationParser:
 
     def __init__(self, dir_path):

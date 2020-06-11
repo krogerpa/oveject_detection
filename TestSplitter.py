@@ -1,27 +1,28 @@
 import os
 from shutil import copyfile
-from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array
+
+from keras.preprocessing.image import ImageDataGenerator
 
 ORIGINAL_DATASET_PATH = 'Humanoide Roboter/images/original images/robot_ball_dataset-original'
 DATASET_OUTPUT_PATH = 'Humanoide Roboter/images/current_dataset'
 TEST_SPLIT = 0.2
 
 train_datagen = ImageDataGenerator(
-    validation_split = TEST_SPLIT
+    validation_split=TEST_SPLIT
 )
 
 print("train dataset:")
 train_generator = train_datagen.flow_from_directory(
     ORIGINAL_DATASET_PATH,
-    class_mode = 'binary',
-    subset = 'training'
+    class_mode='binary',
+    subset='training'
 )
 
 print("validation dataset:")
 test_generator = train_datagen.flow_from_directory(
     ORIGINAL_DATASET_PATH,
-    class_mode = 'binary',
-    subset = 'validation'
+    class_mode='binary',
+    subset='validation'
 )
 
 train_dataset_path = os.path.join(DATASET_OUTPUT_PATH, 'robot_ball_dataset')
