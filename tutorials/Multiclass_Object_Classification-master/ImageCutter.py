@@ -46,6 +46,6 @@ for i, sub_dir_name in enumerate(sub_dir_list):
         cropped_img = image.crop(crop_area)
 
         img_name_splitted = os.path.splitext(image_path)
-        cropped_img_name = '{}_{}_cropped.{}'.format(sub_dir_name, img_name_splitted[0], img_name_splitted[1])
+        cropped_img_name = '{}_{}_cropped{}'.format(sub_dir_name, img_name_splitted[0], img_name_splitted[1])
         cropped_img_path = os.path.join(cropped_folder_path, cropped_img_name)
         cropped_img.save(cropped_img_path)
